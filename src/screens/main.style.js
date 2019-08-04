@@ -6,12 +6,14 @@ import {
 
 const s = StyleSheet.create({
   headerWrapper: {
-    paddingTop: hp('15%'),
-    paddingBottom: hp('13%'),
+    paddingTop: hp('11%'),
+    paddingBottom: hp('11%'),
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 0.5
   },
 
   headerTitle: {

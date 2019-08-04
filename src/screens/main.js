@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Header, Body, Title, Text, Content } from 'native-base';
 import * as Font from 'expo-font';
+import { View } from 'react-native';
 import { AppLoading } from 'expo';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import axios from 'axios';
@@ -127,11 +128,11 @@ class Main extends Component {
 
     return (
       <Container>
-        <Header style={s.headerWrapper}>
+        <View style={s.headerWrapper}>
           <Title style={s.dateText}> {this.generateDateTime()} SGT </Title>
           <Text style={s.temperatureText}>{this.state.temperature}°C</Text>
           <Text style={s.subTitle}>{this.state.weather}</Text>
-        </Header>
+        </View>
         <Content>
           <WeatherList weatherList={this.state.weatherList} />
         </Content>
