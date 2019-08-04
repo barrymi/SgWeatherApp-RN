@@ -12,7 +12,7 @@ const s = StyleSheet.create({
   },
 
   weatherIcon: {
-    fontSize: hp('20%'),
+    fontSize: hp('10%'),
     alignSelf: 'center'
   },
 

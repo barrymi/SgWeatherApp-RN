@@ -43,33 +43,35 @@ export default class WeatherInfo extends Component {
     this.setState({ loading: true });
   }
 
-  render() {
-    console.log({ props: this.props.navigation.state.params.obj.date });
+  renderContent = () => {
+    // console.log({ props: this.props.navigation.state.params.obj });
 
     const weather = this.props.navigation.state.params.obj.weather;
-    const temperature = this.props.navigation.state.params.obj.temp;
-    const day = this.props.navigation.state.params.obj.day;
-    const date = this.props.navigation.state.params.obj.date;
+    const temp = this.props.navigation.state.params.obj.temp;
+    const minTemp = this.props.navigation.state.params.obj.temp_min;
+    const maxTemp = this.props.navigation.state.params.obj.temp_max;
+    const dateTime = this.props.navigation.state.params.obj.dateTime;
 
+    return (
+      <Container style={s.container}>
+        <Text style={s.dateText}>{dateTime}</Text>
+
+        <Text style={s.weatherIcon}>{temp}°C</Text>
+        <Text style={s.weatherDescText}>{weather}</Text>
+
+        <Text style={s.tempText}>
+          Average temperature: {minTemp}°C - {maxTemp}°C
+        </Text>
+      </Container>
+    );
+  };
+
+  render() {
+    const content = this.renderContent();
     if (!this.state.loading) {
       return <AppLoading />;
     }
 
-    return (
-      <Container style={s.container}>
-        <Text style={s.dateText}>
-          {day}, {date}
-        </Text>
-
-        <Icon
-          type="MaterialCommunityIcons"
-          name="weather-cloudy"
-          style={s.weatherIcon}
-        />
-        <Text style={s.weatherDescText}>{weather}</Text>
-
-        <Text style={s.tempText}>Average temperature: {temperature} </Text>
-      </Container>
-    );
+    return content;
   }
 }
