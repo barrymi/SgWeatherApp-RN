@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Title, Text, Content, Icon } from 'native-base';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import moment from 'moment';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp
@@ -43,9 +44,12 @@ export default class WeatherInfo extends Component {
     this.setState({ loading: true });
   }
 
-  renderContent = () => {
-    // console.log({ props: this.props.navigation.state.params.obj });
+  generateDateTime = dateTime => {
+    const date = moment(dateTime).format('ddd, Do MMM YYYY HH:MM A');
+    return date;
+  };
 
+  renderContent = () => {
     const weather = this.props.navigation.state.params.obj.weather;
     const temp = this.props.navigation.state.params.obj.temp;
     const minTemp = this.props.navigation.state.params.obj.temp_min;
@@ -54,7 +58,7 @@ export default class WeatherInfo extends Component {
 
     return (
       <Container style={s.container}>
-        <Text style={s.dateText}>{dateTime}</Text>
+        <Text style={s.dateText}>{this.generateDateTime(dateTime)}</Text>
 
         <Text style={s.weatherIcon}>{temp}°C</Text>
         <Text style={s.weatherDescText}>{weather}</Text>

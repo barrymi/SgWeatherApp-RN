@@ -24,6 +24,11 @@ class WeatherList extends Component {
     return newCel;
   };
 
+  generateDateTime = dateTime => {
+    const date = moment(dateTime).format('ddd, Do MMM YYYY HH:MM A');
+    return date;
+  };
+
   renderListItem = () => {
     let obj;
 
@@ -53,9 +58,9 @@ class WeatherList extends Component {
               onPress={() => this.handleListItemPressed(weatherObj)}
             >
               <View>
-                <Text style={s.itemTitle}>{dt_txt}</Text>
+                <Text style={s.itemTitle}>{this.generateDateTime(dt_txt)}</Text>
                 <Text style={s.tempText}>
-                  {this.convertKelvinToCelsius(temp_min)}°C -{' '}
+                  {this.convertKelvinToCelsius(temp_min)}°C -
                   {this.convertKelvinToCelsius(temp_max)}°C
                 </Text>
                 <Text style={s.weatherText}>{weatherDesc}</Text>
