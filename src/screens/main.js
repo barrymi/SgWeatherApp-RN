@@ -3,10 +3,11 @@ import { Container, Header, Body, Title, Text, Content } from 'native-base';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import axios from 'axios';
+import moment from 'moment';
+import s from './main.style';
 import Roboto from '../../node_modules/native-base/Fonts/Roboto.ttf';
 import RobotoMedium from '../../node_modules/native-base/Fonts/Roboto_medium.ttf';
-import s from './main.style';
-import axios from 'axios';
 import { request, sgInfo } from '../helpers/constant';
 import WeatherList from '../components/weatherList';
 
@@ -31,8 +32,9 @@ class Main extends Component {
     super(props);
     this.state = {
       loading: false,
-      temperature: '30',
-      weather: '---'
+      temperature: '--',
+      weather: '---',
+      weatherList: []
     };
   }
 
@@ -43,6 +45,7 @@ class Main extends Component {
     });
     this.setState({ loading: true });
     this.getDailyWeather();
+    this.gerFutureWeatherForecast();
   }
 
   convertKelvinToCelsius = temp => {
@@ -66,15 +69,18 @@ class Main extends Component {
     return newWeather;
   };
 
+  generateDateTime = () => {
+    const date = moment().format('ddd, Do MMM YYYY HH:MM A');
+    return date;
+  };
+
   getDailyWeather() {
-    url = `https://${request.domain}weather?id=${sgInfo.id}&APPID=${
-      request.appID
-    }`;
+    url = `${request.domain}weather?id=${sgInfo.id}&APPID=${request.appID}`;
 
     axios
       .get(url)
       .then(res => {
-        console.log({ Res: res });
+        console.log({ DailyWeather: res });
 
         if (res.status === 200) {
           const data = res.data;
@@ -95,6 +101,25 @@ class Main extends Component {
       });
   }
 
+  gerFutureWeatherForecast = () => {
+    url = `${request.domain}forecast?id=${sgInfo.id}&APPID=${request.appID}`;
+    axios
+      .get(url)
+      .then(res => {
+        console.log({ WeatherList: res });
+
+        if (res.status === 200) {
+          const { list } = res.data;
+          this.setState({
+            weatherList: list
+          });
+        }
+      })
+      .catch(err => {
+        console.log({ error: err });
+      });
+  };
+
   render() {
     if (!this.state.loading) {
       return <AppLoading />;
@@ -103,12 +128,12 @@ class Main extends Component {
     return (
       <Container>
         <Header style={s.headerWrapper}>
-          <Title style={s.dateText}> Wed, 1 Aug 2019 0:11AM SGT</Title>
+          <Title style={s.dateText}> {this.generateDateTime()} SGT </Title>
           <Text style={s.temperatureText}>{this.state.temperature}°C</Text>
           <Text style={s.subTitle}>{this.state.weather}</Text>
         </Header>
         <Content>
-          <WeatherList />
+          <WeatherList weatherList={this.state.weatherList} />
         </Content>
       </Container>
     );
